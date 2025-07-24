@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>బీజగణిత సమీకరణాల మోడల్</title>
+    <style>
+        /* మన పేజీ అందంగా కనిపించడానికి CSS స్టైల్స్ */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            flex-direction: column; /* ఫుటర్ కింద ఉండటానికి */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px_12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #1a73e8;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+        select, input[type="number"], button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box; 
+        }
+        button {
+            background-color: #1a73e8;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #155ab6;
+        }
+        #result-container {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            line-height: 1.8;
+            font-size: 17px;
+        }
+        /* ఫార్ములా హెడ్డింగ్ కోసం స్టైల్ */
+        #result-container h3 {
+            text-align: center;
+            color: #0d6efd;
+            word-wrap: break-word; /* పొడవైన పదాలు బ్రేక్ అవ్వడానికి */
+        }
+        .hidden {
+            display: none;
+        }
+        hr {
+            border: 0;
+            border-top: 1px dashed #ccc;
+            margin: 20px 0;
+        }
+        b, strong {
+           color: #d63384; 
+        }
+        /* ఫుటర్ కోసం స్టైల్ */
+        footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        /* మొబైల్ స్క్రీన్ల కోసం ప్రత్యేక స్టైల్స్ */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>బీజగణిత సమీకరణాల సాధన</h1>
+
+        <div class="controls">
+            <div>
+                <label for="identity-select">సమీకరణం (Identity) ఎంచుకోండి:</label>
+                <select id="identity-select">
+                    <option value="a_plus_b_sq">(a + b)²</option>
+                    <option value="a_minus_b_sq">(a - b)²</option>
+                    <option value="a_sq_minus_b_sq">a² - b²</option>
+                    <option value="a_plus_b_cube">(a + b)³</option>
+                    <option value="a_minus_b_cube">(a - b)³</option>
+                    <option value="a_plus_b_plus_c_sq">(a + b + c)²</option>
+                    <option value="a_cube_plus_b_cube">a³ + b³</option>
+                    <option value="a_cube_minus_b_cube">a³ - b³</option>
+                </select>
+            </div>
+
+            <div id="input-a">
+                <label for="val-a">a విలువ:</label>
+                <input type="number" id="val-a" placeholder="a విలువను ఇవ్వండి (ఉదా: 5)">
+            </div>
+
+            <div id="input-b">
+                <label for="val-b">b విలువ:</label>
+                <input type="number" id="val-b" placeholder="b విలువను ఇవ్వండి (ఉదా: 3)">
+            </div>
+
+            <div id="input-c" class="hidden">
+                <label for="val-c">c విలువ:</label>
+                <input type="number" id="val-c" placeholder="c విలువను ఇవ్వండి (ఉదా: 2)">
+            </div>
+            
+            <button id="calculate-btn">లెక్కించు (Calculate)</button>
+        </div>
+
+        <div id="result-container">
+            ఫలితం ఇక్కడ చూపబడుతుంది...
+        </div>
+    </div>
+
+    <footer>
+        A Muninder Raju SA Maths<br>GHS Eidgaon, Nirmal
+    </footer>
+
+    <script>
+        const identitySelect = document.getElementById('identity-select');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const inputC = document.getElementById('input-c');
+        const resultContainer = document.getElementById('result-container');
+        
+        identitySelect.addEventListener('change', () => {
+            if (identitySelect.value === 'a_plus_b_plus_c_sq') {
+                inputC.classList.remove('hidden');
+            } else {
+                inputC.classList.add('hidden');
+            }
+        });
+
+        calculateBtn.addEventListener('click', () => {
+            const a = parseFloat(document.getElementById('val-a').value);
+            const b = parseFloat(document.getElementById('val-b').value);
+            const c = parseFloat(document.getElementById('val-c').value);
+            const identity = identitySelect.value;
+            
+            let htmlOutput = '';
+            
+            const isCRequired = identity === 'a_plus_b_plus_c_sq';
+            if (isNaN(a) || isNaN(b) || (isCRequired && isNaN(c))) {
+                resultContainer.innerHTML = '<b style="color:red;">దయచేసి అన్ని విలువలను సరిగ్గా ఇవ్వండి.</b>';
+                return;
+            }
+
+            switch (identity) {
+                case 'a_plus_b_sq':
+                    htmlOutput = `<h3>(a + b)² = a² + 2ab + b²</h3><hr><b>1. ఫార్ములాలో విలువలను ప్రతిక్షేపించడం:</b><br>(${a} + ${b})² = (${a})² + 2 * (${a}) * (${b}) + (${b})²<br><br><b>2. ఎడమ వైపు (LHS) లెక్కించడం:</b><br>(${a + b})² = <b>${(a + b) ** 2}</b><br><br><b>3. కుడి వైపు (RHS) లెక్కించడం:</b><br>(${a})² + 2 * ${a} * ${b} + (${b})² = ${a*a} + ${2*a*b} + ${b*b} = <b>${a*a + 2*a*b + b*b}</b><hr><h4>తుది ఫలితం: <b>${(a + b) ** 2} = ${a*a + 2*a*b + b*b}</b> ✅</h4>`;
+                    break;
+
+                case 'a_minus_b_sq':
+                     htmlOutput = `<h3>(a - b)² = a² - 2ab + b²</h3><hr><b>1. ఫార్ములాలో విలువలను ప్రతిక్షేపించడం:</b><br>(${a} - ${b})² = (${a})² - 2 * (${a}) * (${b}) + (${b})²<br><br><b>2. ఎడమ వైపు (LHS) లెక్కించడం:</b><br>(${a - b})² = <b>${(a - b) ** 2}</b><br><br><b>3. కుడి వైపు (RHS) లెక్కించడం:</b><br>(${a})² - 2 * ${a} * ${b} + (${b})² = ${a*a} - ${2*a*b} + ${b*b} = <b>${a*a - 2*a*b + b*b}</b><hr><h4>తుది ఫలితం: <b>${(a - b) ** 2} = ${a*a - 2*a*b + b*b}</b> ✅</h4>`;
+                    break;
+                
+                case 'a_sq_minus_b_sq':
+                    htmlOutput = `<h3>a² - b² = (a - b)(a + b)</h3><hr><b>1. ఫార్ములాలో విలువలను ప్రతిక్షేపించడం:</b><br>(${a})² - (${b})² = (${a} - ${b}) * (${a} + ${b})<br><br><b>2. ఎడమ వైపు (LHS) లెక్కించడం:</b><br>${a*a} - ${b*b} = <b>${a*a - b*b}</b><br><br><b>3. కుడి వైపు (RHS) లెక్కించడం:</b><br>(${a - b}) * (${a + b}) = ${a - b} * ${a + b} = <b>${(a-b)*(a+b)}</b><hr><h4>తుది ఫలితం: <b>${a*a - b*b} = ${(a-b)*(a+b)}</b> ✅</h4>`;
+                    break;
+
+                case 'a_plus_b_cube':
+                    let rhs_plus_cube = a**3 + 3*a*a*b + 3*a*b*b + b**3;
+                    htmlOutput = `<h3>(a + b)³ = a³ + 3a²b + 3ab² + b³</h3><hr><b>1. LHS:</b> (${a} + ${b})³ = (${a+b})³ = <b>${(a+b)**3}</b><br><br><b>2. RHS:</b> (${a})³ + 3*(${a})²*(${b}) + 3*(${a})*(${b})² + (${b})³<br>= ${a**3} + ${3*a*a*b} + ${3*a*b*b} + ${b**3} = <b>${rhs_plus_cube}</b><hr><h4>తుది ఫలితం: <b>${(a+b)**3} = ${rhs_plus_cube}</b> ✅</h4>`;
+                    break;
+
+                case 'a_minus_b_cube':
+                    let rhs_minus_cube = a**3 - 3*a*a*b + 3*a*b*b - b**3;
+                    htmlOutput = `<h3>(a - b)³ = a³ - 3a²b + 3ab² - b³</h3><hr><b>1. LHS:</b> (${a} - ${b})³ = (${a-b})³ = <b>${(a-b)**3}</b><br><br><b>2. RHS:</b> (${a})³ - 3*(${a})²*(${b}) + 3*(${a})*(${b})² - (${b})³<br>= ${a**3} - ${3*a*a*b} + ${3*a*b*b} - ${b**3} = <b>${rhs_minus_cube}</b><hr><h4>తుది ఫలితం: <b>${(a-b)**3} = ${rhs_minus_cube}</b> ✅</h4>`;
+                    break;
+                
+                case 'a_cube_plus_b_cube':
+                    htmlOutput = `<h3>a³ + b³ = (a + b)(a² - ab + b²)</h3><hr><b>1. LHS:</b> (${a})³ + (${b})³ = ${a**3} + ${b**3} = <b>${a**3 + b**3}</b><br><br><b>2. RHS:</b> (${a} + ${b}) * ((${a})² - ${a}*${b} + (${b})²) <br>= (${a+b}) * (${a*a} - ${a*b} + ${b*b}) = <b>${(a+b) * (a*a - a*b + b*b)}</b><hr><h4>తుది ఫలితం: <b>${a**3 + b**3} = ${(a+b) * (a*a - a*b + b*b)}</b> ✅</h4>`;
+                    break;
+
+                case 'a_cube_minus_b_cube':
+                    htmlOutput = `<h3>a³ - b³ = (a - b)(a² + ab + b²)</h3><hr><b>1. LHS:</b> (${a})³ - (${b})³ = ${a**3} - ${b**3} = <b>${a**3 - b**3}</b><br><br><b>2. RHS:</b> (${a} - ${b}) * ((${a})² + ${a}*${b} + (${b})²) <br>= (${a-b}) * (${a*a} + ${a*b} + ${b*b}) = <b>${(a-b) * (a*a + a*b + b*b)}</b><hr><h4>తుది ఫలితం: <b>${a**3 - b**3} = ${(a-b) * (a*a + a*b + b*b)}</b> ✅</h4>`;
+                    break;
+
+                case 'a_plus_b_plus_c_sq':
+                    let lhs_trinomial = (a+b+c)**2;
+                    let rhs_trinomial = a*a + b*b + c*c + 2*a*b + 2*b*c + 2*c*a;
+                    htmlOutput = `<h3>(a+b+c)² = a²+b²+c²+2ab+2bc+2ca</h3><hr><b>1. LHS:</b> (${a}+${b}+${c})² = (${a+b+c})² = <b>${lhs_trinomial}</b><br><br><b>2. RHS:</b> (${a})²+(${b})²+(${c})²+2*${a}*${b}+2*${b}*${c}+2*${c}*${a}<br>= ${a*a}+${b*b}+${c*c}+${2*a*b}+${2*b*c}+${2*c*a} = <b>${rhs_trinomial}</b><hr><h4>తుది ఫలితం: <b>${lhs_trinomial} = ${rhs_trinomial}</b> ✅</h4>`;
+                    break;
+            }
+            
+            resultContainer.innerHTML = htmlOutput;
+        });
+
+        identitySelect.dispatchEvent(new Event('change'));
+    </script>
+
+</body>
+</html>
